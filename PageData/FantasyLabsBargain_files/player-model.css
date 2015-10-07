@@ -1,0 +1,873 @@
+﻿td {
+    padding: 4px !important;
+}
+th {
+    padding-left:4px !important;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+
+padding: 8px 15px 8px;
+}
+
+.nav-tabs > li > a, .nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
+
+
+padding: 8px 15px 8px;
+
+}
+
+.sidebarBox:first-child {
+    margin-bottom: 0px;
+}
+.sidebarBox {
+    position: relative;
+    -webkit-box-shadow: 0 0 0px 2px #dddddd;
+    -moz-box-shadow: 0 0 0px 2px #dddddd;
+    box-shadow: 0 0 0px 2px #dddddd;
+    border: 1px solid #cacaca;
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    overflow: hidden;
+}
+#sidebar .columnHeader:first-child {
+    border-top: 1px solid #FFF;
+    margin-top: -1px;
+}
+.sidebarBox .columnHeader {
+    line-height: 40px;
+    position: relative;
+}
+.sectionBody {
+    padding: 0px;
+}
+.sidebarBox .columnBody .columnSection {
+    position: relative;
+}
+
+.sectionHeader .displayToggle {
+    color: #2A2A2A;
+    font-size: 14px;
+    line-height: 32px;
+    padding-left: 10px;
+}
+a,  .fauxLink {
+    text-decoration: none;
+    outline: none;
+    color: #1BA2DC;
+    cursor: pointer;
+}
+.sidebarBox .columnBody .columnSection .sectionHeader {
+    line-height: 32px;
+    height: 32px;
+    border-top: 1px solid #D4D4D4;
+    border-bottom: 1px solid #D4D4D4;
+    background: #EFF0F3;
+    -webkit-box-shadow: 0 1px 2px 0px #dddddd;
+    -moz-box-shadow: 0 1px 2px 0px #dddddd;
+    box-shadow: 0 1px 2px 0px #dddddd;
+}
+
+.sidebarBox .columnHeader h3 {
+font-size: 14px;
+font-weight: 700;
+margin-left: 8px;
+}
+#search {
+    padding: 0 0 5px 8px;
+    border-bottom: 1px solid #cacaca;
+}
+.exp {
+    cursor:pointer;
+}
+
+.colSys, .centerInfo, .customHeader {
+   border-top: 0px solid #ddd !important;
+}
+.centerInfo {
+    font-weight: 300;
+    font-size: 2em;
+    font-family: "Open Sans",Arial,Helvetica,sans-serif;
+    letter-spacing: -1px;
+    width: 100px !important;
+}
+a > em {
+    font-size: 12px;
+    display: block;
+    padding: 3px;
+    position: absolute;
+    top: -8px;
+    right: -6px;
+    text-decoration: none;
+    font-style: normal;
+    background: #404040;
+    color: #fff;
+    min-width: 16px;
+    border-radius: 50%;
+    max-height: 16px;
+    line-height: 8px;
+    font-weight: 700;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,.1);
+}
+
+.dt-toolbar {
+    display:none;
+}
+
+.guage {
+  width: 32px;
+  height: 16px;
+  background: url(/assets/images/catalogSprite.png) -89px -164px no-repeat;
+  text-indent: -9999px;
+  margin: 0 auto;
+}
+.guage.Low {
+  background-position: -89px -182px;
+}
+.guage.Medium {
+  background-position: -89px -201px;
+}
+.guage.High {
+  background-position: -89px -220px;
+}
+.guage.VeryHigh {
+  background-position: -89px -239px;
+}
+.guage.New {
+  background-position: -89px -258px;
+}
+
+.percentageArrow.up {
+  color: #3ba729 !important;
+}
+.percentageArrow.up span {
+  color: #3ba729 !important;
+  padding: 0 0px 0 14px;
+  background: url(/assets/images/iconsSprite.png) 0px -165px no-repeat;
+  text-align: left;
+}
+.percentageArrow.down {
+  color: #DD2D2D  !important;
+}
+.percentageArrow.down span {
+  color: #DD2D2D  !important;
+  padding: 0 0px 0 14px;
+  background: url(/assets/images/iconsSprite.png) 0px -150px no-repeat;
+  text-align: left;
+}
+.percentageArrow.gray {
+  color: #AFAFAF !important;
+}
+.percentageArrow.gray span {
+  color: #AFAFAF !important;
+}
+.percentageArrow.gray.up span {
+  background-position: 0px -876px;
+}
+.percentageArrow.gray.down span {
+  background-position: 0px -860px;
+}
+.percentageArrow span.noColor {
+  color: #0f1937;
+  font-size: 12px;
+}
+.percentageArrow.large {
+  font-size: 17px;
+  font-weight: normal;
+}
+.percentageArrow.large.up span {
+  padding: 0 0px 0 14px;
+  background: url(/assets/images/iconsSprite.png) 0px -278px no-repeat;
+}
+.percentageArrow.large.down span {
+  padding: 0 0px 0 14px;
+  background: url(/assets/images/iconsSprite.png) 0px -258px no-repeat;
+}
+.system-name {
+    font-size:16px;
+    cursor: pointer;
+    color:#1BA2DC;
+}
+
+small{
+    font-size:75%;
+    font-style:italic;
+    color:#404040;
+}
+    .myGrid {
+            height: 600px;
+            font-size:.9em;
+        }
+
+            .myGrid .alignRight {
+                text-align: right;
+            }
+
+            .myGrid .alignCenter {
+                text-align: center;
+            }
+
+        .star {
+            height: 24px;
+            width: 24px;
+            margin: 3px 0px 0px 3px;
+            padding: 2px 0px 0px 0px;
+        }
+
+        .red {
+            background-color: red !important;
+            color: white !important;
+        }
+
+        .player-detail span {
+            cursor: pointer;
+            color: #65A0D0;
+        }
+
+        slider {
+            margin: 15px 5px 25px 5px;
+        }
+
+            slider div.handle:after, [slider] div.handle:after {
+                top: 5px;
+                left: 5px;
+            }
+            .pre-footer {display:none;}
+            .footer {display:none;}
+
+#playerModelTable {
+    font-size:.9em;
+}
+#model-actions {
+    padding-left:20px;
+}
+       .rating-100 {
+           background-color: #1BFB21;
+       }
+       .rating-90  {
+           background-color: #1BFB21;
+       }
+       .rating-80  {
+           background-color: #7FFE7D;
+       }
+       .rating-70  {
+           background-color: #7FFE7D;
+       }
+       .rating-60  {
+           background-color: #A1FFA3;
+       }
+       .rating-50 {
+           background-color: #CBFDC8;
+       }
+       .rating-40  {
+           background-color: #CBFDC8;
+       }
+       .rating-30 {
+           background-color: #FFE2E4;
+       }
+       .rating-20  {
+           background-color: #FC9E9F;
+       }
+       .rating-10 {
+           background-color: #FF797A;
+       }
+       .rating-0  {
+           background-color: #FF797A;
+       }
+        .rating-100 input{
+           background-color: #1BFB21;
+           border-width: 1px;
+           border-color: #aaa;
+           text-align:center;
+       }
+       .rating-90 input {
+           background-color: #1BFB21;
+           border-width: 1px;
+           border-color: #aaa;
+           text-align:center;
+       }
+       .rating-80 input {
+           background-color: #7FFE7D;
+           border-width: 1px;
+           border-color: #aaa;
+           text-align:center;
+       }
+       .rating-70  input{
+           background-color: #7FFE7D;
+           border-width: 1px;
+           border-color: #aaa;
+           text-align:center;
+       }
+       .rating-60 input {
+           background-color: #A1FFA3;
+           border-width: 1px;
+           border-color: #aaa;
+           text-align:center;
+       }
+       .rating-50 input{
+           background-color: #CBFDC8;
+           border-width: 1px;
+           border-color: #aaa;
+           text-align:center;
+       }
+       .rating-40 input {
+           background-color: #CBFDC8;
+           border-width: 1px;
+           border-color: #aaa;
+           text-align:center;
+       }
+       .rating-30 input{
+           background-color: #FFE2E4;
+           border-width: 1px;
+           border-color: #aaa;
+           text-align:center;
+       }
+       .rating-20 input {
+           background-color: #FC9E9F;
+           border-width: 1px;
+           border-color: #aaa;
+           text-align:center;
+       }
+       .rating-10 input{
+           background-color: #FF797A;
+           border-width: 1px;
+           border-color: #aaa;
+           text-align:center;
+       }
+       .rating-0  input{
+           background-color: #FF797A;
+           border-width: 1px;
+           border-color: #aaa;
+           text-align:center;
+       }
+       .vegas-100 > .Runs {
+           background-color: #1BFB21;
+       }
+
+       .vegas-90 > .Runs {
+           background-color: #1BFB21;
+       }
+
+       .vegas-80 > .Runs {
+           background-color: #7FFE7D;
+       }
+
+       .vegas-70 > .Runs {
+           background-color: #7FFE7D;
+       }
+
+       .vegas-60 > .Runs {
+           background-color: #A1FFA3;
+       }
+
+       .vegas-50 > .Runs {
+           background-color: #CBFDC8;
+       }
+
+       .vegas-40 > .Runs {
+           background-color: #CBFDC8;
+       }
+
+       .vegas-30 > .Runs {
+           background-color: #FFE2E4;
+       }
+
+       .vegas-20 > .Runs {
+           background-color: #FC9E9F;
+       }
+
+       .vegas-10 > .Runs {
+           background-color: #FF797A;
+       }
+
+       .vegas-0 > .Runs {
+           background-color: #FF797A;
+       }
+        th {font-size:.9em !important; text-align:center;}
+
+           .consistency-100 > .Season_X1 {
+           background-color: #1BFB21;
+       }
+
+       .consistency-90 > .Season_X1 {
+           background-color: #1BFB21;
+       }
+
+       .consistency-80 > .Season_X1 {
+           background-color: #7FFE7D;
+       }
+
+       .consistency-70 > .Season_X1 {
+           background-color: #7FFE7D;
+       }
+
+       .consistency-60 > .Season_X1 {
+           background-color: #A1FFA3;
+       }
+
+       .consistency-50 > .Season_X1 {
+           background-color: #CBFDC8;
+       }
+
+       .consistency-40 > .Season_X1 {
+           background-color: #CBFDC8;
+       }
+
+       .consistency-30 > .Season_X1 {
+           background-color: #FFE2E4;
+       }
+
+       .consistency-20 > .Season_X1 {
+           background-color: #FC9E9F;
+       }
+
+       .consistency-10 > .Season_X1 {
+           background-color: #FF797A;
+       }
+
+       .consistency-0 > .Season_X1 {
+           background-color: #FF797A;
+       }
+
+       
+           .ppg-100 > .Season_PPG {
+           background-color: #1BFB21;
+       }
+
+       .ppg-90 > .Season_PPG {
+           background-color: #1BFB21;
+       }
+
+       .ppg-80 > .Season_PPG {
+           background-color: #7FFE7D;
+       }
+
+       .ppg-70 > .Season_PPG {
+           background-color: #7FFE7D;
+       }
+
+       .ppg-60 > .Season_PPG {
+           background-color: #A1FFA3;
+       }
+
+       .ppg-50 > .Season_PPG {
+           background-color: #CBFDC8;
+       }
+
+       .ppg-40 > .Season_PPG {
+           background-color: #CBFDC8;
+       }
+
+       .ppg-30 > .Season_PPG {
+           background-color: #FFE2E4;
+       }
+
+       .ppg-20 > .Season_PPG {
+           background-color: #FC9E9F;
+       }
+
+       .ppg-10 > .Season_PPG {
+           background-color: #FF797A;
+       }
+
+       .ppg-0 > .Season_PPG {
+           background-color: #FF797A;
+       }    .score-100 > .Score {
+           background-color: #1BFB21;
+       }
+.plus-100 > .Season_Plus_Minus {
+           background-color: #1BFB21;
+       }
+       .plus-90 > .Season_Plus_Minus {
+           background-color: #1BFB21;
+       }
+       .plus-80 > .Season_Plus_Minus {
+           background-color: #7FFE7D;
+       }
+       .plus-70 > .Season_Plus_Minus {
+           background-color: #7FFE7D;
+       }
+       .plus-60 > .Season_Plus_Minus {
+           background-color: #A1FFA3;
+       }
+       .plus-50 > .Season_Plus_Minus {
+           background-color: #CBFDC8;
+       }
+       .plus-40 > .Season_Plus_Minus {
+           background-color: #CBFDC8;
+       }
+       .plus-30 > .Season_Plus_Minus {
+           background-color: #FFE2E4;
+       }
+       .plus-20 > .Season_Plus_Minus {
+           background-color: #FC9E9F;
+       }
+       .plus-10 > .Season_Plus_Minus {
+           background-color: #FF797A;
+       }
+       .plus-0 > .Season_Plus_Minus {
+           background-color: #FF797A;
+       }
+       .upside-100 > .Season_X2 {
+           background-color: #1BFB21;
+       }
+       .upside-90 > .Season_X2 {
+           background-color: #1BFB21;
+       }
+       .upside-80 > .Season_X2 {
+           background-color: #7FFE7D;
+       }
+       .upside-70 > .Season_X2 {
+           background-color: #7FFE7D;
+       }
+       .upside-60 > .Season_X2 {
+           background-color: #A1FFA3;
+       }
+       .upside-50 > .Season_X2 {
+           background-color: #CBFDC8;
+       }
+       .upside-40 > .Season_X2 {
+           background-color: #CBFDC8;
+       }
+       .upside-30 > .Season_X2 {
+           background-color: #FFE2E4;
+       }
+       .upside-20 > .Season_X2 {
+           background-color: #FC9E9F;
+       }
+       .upside-10 > .Season_X2 {
+           background-color: #FF797A;
+       }
+       .upside-0 > .Season_X2 {
+           background-color: #FF797A;
+       }
+          .woba-100 > .wOBA_Diff {
+           background-color: #1BFB21;
+       }
+       .woba-90 > .wOBA_Diff {
+           background-color: #1BFB21;
+       }
+       .woba-80 > .wOBA_Diff {
+           background-color: #7FFE7D;
+       }
+       .woba-70 > .wOBA_Diff {
+           background-color: #7FFE7D;
+       }
+       .woba-60 > .wOBA_Diff {
+           background-color: #A1FFA3;
+       }
+       .woba-50 > .wOBA_Diff {
+           background-color: #CBFDC8;
+       }
+       .woba-40 > .wOBA_Diff {
+           background-color: #CBFDC8;
+       }
+       .woba-30 > .wOBA_Diff {
+           background-color: #FFE2E4;
+       }
+       .woba-20 > .wOBA_Diff {
+           background-color: #FC9E9F;
+       }
+       .woba-10 > .wOBA_Diff {
+           background-color: #FF797A;
+       }
+       .woba-0 > .wOBA_Diff {
+           background-color: #FF797A;
+       }
+
+        
+
+.Watch, .Lineup_Order {
+    text-align:center;
+}
+
+
+table {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+.dataTable > thead > tr > th.sorting, .dataTable > thead > tr > th.sorting_asc, .dataTable > thead > tr > th.sorting_desc {
+  padding-right: 8px !important;
+}
+       
+table.dataTable thead .sorting {
+  background: none;
+}        .btn-default:active, .btn-default.active {
+            color: #fff;
+            background-color: #1068f6;
+        }
+            .btn-default:active:hover, .btn-default.active:hover {
+                color: #fff;
+                background-color: #1068f6;
+            }
+
+
+ 
+ .rank-941{
+     background-color:#64aed9 !important;
+ }
+ .rank-942{
+     background-color:#d98f64 !important;
+ }
+
+ .rank-948{
+     background-color: #d964ae !important;
+ }
+ .rank-945{
+      background-color: #64d98f !important;
+ }
+ .rank-963{
+     background-color: #d9ca64 !important;
+
+ }
+ .rank-941{
+     background-color:#9064d9 !important;
+ }
+ .rank-946 {
+     background-color:#7e7e7e !important;
+ }
+ .rank-944{
+     background-color:#bd3f3f !important;
+ }
+ .model-help{
+     font-size:10px;
+     margin-left:4px;
+ }
+ .progress{
+     background-color: #ccc;
+ }
+ .fa {
+     margin-right:4px;
+ }
+
+ @media (min-width: 992px)
+ {
+  html{
+     overflow:hidden !important;
+ }
+}
+  html{
+      overflow-x: hidden !important;
+  }
+
+  .toast-top-right {
+            top: 70px;
+        }
+        .toast-close-all {
+            display:none;
+            position: fixed;
+            z-index: 999999;
+            right: 14px;
+            top: 30px;
+            padding: 10px;
+            opacity: .8;
+        }
+        .toast-close-all a {
+            color: #fff;
+        }
+        #toast-container>div{opacity:1;}
+
+        #playerModelTable{
+            font-size:.9em;
+        }
+         #playerModelTable_wrapper{
+            font-size:.9em;
+        }
+
+
+        .ui-grid-cell-contents {
+  white-space: normal !important;
+  font-size: .9em !important;
+}
+
+        .xx-dialog .modal-dialog {
+    width :90%;
+    min-width: 800px;
+    max-width:1080px;
+}
+    .fa-lock, .fa-check-circle, .fa-eye, .fa-thumbs-up{
+        color:green;
+    }
+    .fa-check-circle {
+        margin-left: 3px;
+    }
+    .data-grid {
+        font-size: .9em;
+    }
+        .data-grid thead tr, .data-grid tfoot tr {
+            font-weight: bold;
+        }
+    .unlock {
+        opacity: .3;
+    }
+    .notwatched {
+        opacity: .3;
+    }
+    .fa-lock, .fa-times, .fa-reply, .fa-eye,.fa-thumbs-up {
+        cursor: pointer;
+    } 
+    .fa-lock
+    {
+        font-size:14px !important;
+    }
+.icon-Probable:before { font-size: .8em;   content:"P";   color:green; font-weight: 600;  }
+.icon-Questionable:before { font-size: .8em;   content:"Q";   color:#404040;font-weight: 600;  }
+.icon-Doubtful:before { font-size: .8em;   content:"D";   color:red;font-weight: 600;  }
+.icon-Out:before { font-size: .8em;   content:"O";   color:red; font-weight: 600;  }
+.icon-confirmed-Y:before { font: normal normal normal 14px/1 FontAwesome;content: "\f058";font-size:.7em;color:green;padding-left:2px; }
+
+
+/*Column Formatting*/
+
+
+
+
+.Team_Group {
+  background-color: #efefef;
+}
+.Stat_Group{
+  background-color: #efefef;
+}
+.Vegas_Group{
+  background-color: #efefef;
+}
+.Fantasy_Season_Group{
+ background-color: #efefef;
+}
+.umpSpan{font-size: 90% !important;}
+
+
+.wind1 {
+    font-size: .9em;
+    font-weight: 500;
+}
+.wind2 {
+    font-size: 1em;
+    font-weight: 700;
+}
+.wind3 {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.stadium2 {
+    margin: auto;
+    width: 120px;
+    height:110px;
+    margin-top: -30px;
+            
+}
+.stadium2 .wind-bad {
+    width: 120px;
+    height: 120px;
+    background: url(/assets/wind-bad.png) no-repeat;
+    background-position-x: 44px;
+    background-position-y: 44px;
+}
+.stadium2 .wind-ok{
+    width: 120px;
+    height: 120px;
+    background: url(/assets/wind-ok.png) no-repeat;
+    background-position-x: 44px;
+    background-position-y: 44px;
+}
+.stadium2 .wind-normal {
+    width: 120px;
+    height: 120px;
+    background: url(/assets/wind-normal.png) no-repeat;
+    background-position-x: 44px;
+    background-position-y: 44px;
+}
+
+#systemGrid {
+    font-size: 12px;
+}
+#systemGrid  .ag-header-cell-text {
+    font-size: 14px;
+}
+
+
+
+#systemGrid .ag-cell.cell-col-0.systemopen-name {
+  text-align: left;
+  padding-left: 10px;
+}
+#systemProGrid .systemopen-results {
+    font-size:.8em;
+      text-align:left;
+}
+
+#systemProGrid .systemopen-desc{
+    text-align:left;
+}
+
+.bkgd-stats{
+    background-image: url("/assets/playermodels/modelimages/stat.png");height:80px;width:120px;
+}
+.bkgd-trends{
+    background-image: url("/assets/playermodels/modelimages/trends.png");height:80px;width:120px;
+}
+
+.bkgd-vegas{
+    background-image: url("/assets/playermodels/modelimages/vegas.png");height:80px;width:120px;
+}
+.bkgd-tournament {
+    background-image: url("/assets/playermodels/modelimages/tournament.png");
+    height: 80px;
+    width: 120px;
+}
+.bkgd-cash{
+    background-image: url("/assets/playermodels/modelimages/cash.png");height:80px;width:120px;
+}
+.bkgd-weather {
+    background-image: url("/assets/playermodels/modelimages/weather.png");
+    height: 80px;
+    width: 120px;
+}
+.bkgd-balanced{
+    background-image: url("/assets/playermodels/modelimages/balanced.png");height:80px;width:120px;
+}
+.bkgd-value{
+    background-image: url("/assets/playermodels/modelimages/value.png");height:80px;width:120px;
+}
+.bkgd-bargain{
+    background-image: url("/assets/playermodels/modelimages/bargain.png");height:80px;width:120px;
+}
+.bkgd-discount{
+    background-image: url("/assets/playermodels/modelimages/discount.png");height:80px;width:120px;
+}
+.bkgd-order{
+    background-image: url("/assets/playermodels/modelimages/order.png");height:80px;width:120px;
+}
+.bkgd-misc{
+    background-image: url("/assets/playermodels/modelimages/misc.png");height:80px;width:120px;
+}
+.bkgd-bales{
+    background-image: url("/assets/playermodels/modelimages/bales.png");height:80px;width:120px;
+}
+.bkgd-csuram88{
+    background-image: url("/assets/playermodels/modelimages/csuram88.png");height:80px;width:120px;
+}
+#systemProGrid  small {
+    white-space: initial;
+    font-style: normal;
+}
+
+.model-title{
+    margin: 4px 10px;
+}
+
+
+.ag-body i{
+    font-style:normal;
+    font-size:11px;
+}
+a:hover{
+    text-decoration:none;
+}
+.btn-block+.btn-block {
+    margin-top: 1px;
+}

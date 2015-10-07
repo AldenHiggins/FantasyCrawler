@@ -1,0 +1,61 @@
+﻿
+
+/* Grid Specific Sizing */
+#playerModelGrid .ag-root {font-size:11px}
+#currentGrid .ag-root {font-size:11px}
+#pastGrid .ag-root {font-size:11px}
+
+/*Column Formatting*/
+.ag-cell.Player_Name {text-align: left !important; padding-left: 4px !important;}
+.ag-cell.Opposing_Team { text-align:left !important; padding-left: 4px !important;}
+.ag-cell.Ump  { text-align:left !important; padding-left: 4px !important;}
+
+
+
+
+.percentageArrow.up {
+  color: #3ba729 !important;
+}
+.percentageArrow.up span {
+  color: #3ba729 !important;
+  padding: 0 0px 0 14px;
+  background: url(/assets/images/iconsSprite.png) 0px -165px no-repeat;
+  text-align: left;
+}
+.percentageArrow.down {
+  color: #DD2D2D  !important;
+}
+.percentageArrow.down span {
+  color: #DD2D2D  !important;
+  padding: 0 0px 0 14px;
+  background: url(/assets/images/iconsSprite.png) 0px -150px no-repeat;
+  text-align: left;
+}
+.percentageArrow.gray {
+  color: #AFAFAF !important;
+}
+.percentageArrow.gray span {
+  color: #AFAFAF !important;
+}
+.percentageArrow.gray.up span {
+  background-position: 0px -876px;
+}
+.percentageArrow.gray.down span {
+  background-position: 0px -860px;
+}
+.percentageArrow span.noColor {
+  color: #0f1937;
+  font-size: 12px;
+}
+.percentageArrow.large {
+  font-size: 17px;
+  font-weight: normal;
+}
+.percentageArrow.large.up span {
+  padding: 0 0px 0 14px;
+  background: url(/assets/images/iconsSprite.png) 0px -278px no-repeat;
+}
+.percentageArrow.large.down span {
+  padding: 0 0px 0 14px;
+  background: url(/assets/images/iconsSprite.png) 0px -258px no-repeat;
+}

@@ -1,0 +1,316 @@
+﻿.page-header-fixed .page-container {
+ margin-top: 0px; 
+}
+.header-navigation ul > li > a {
+    display:inline-block;
+
+}
+.team {
+    margin-top: 10px;
+    background-image: url('/assets/mlb_logo_sprite2.png');
+    width: 70px;
+    height: 70px;
+}
+
+.team-nfl {
+    margin-top: 10px;
+    background-repeat:no-repeat;
+    background-size:100%;
+    width: 100px;
+    height: 70px;
+    margin: auto;
+    margin-bottom: 5px;
+}
+
+.modal-dialog {
+    top:50px;
+}
+
+.t4172 {
+    background-position: 0px -70px;
+}
+
+.t4159 {
+    background-position: -350px -140px;
+}
+
+.t4161 {
+    background-position: 0px 0px;
+}
+
+.t4162 {
+    background-position: -70px 0px;
+}
+
+.t4163 {
+    background-position: -630px -70px;
+}
+
+.t4165 {
+    background-position: 0px -140px;
+}
+
+.t4166 {
+    background-position: -420px 0px;
+}
+
+.t4167 {
+    background-position: -420px -140px;
+}
+
+.t4168 {
+    background-position: -490px 0px;
+}
+
+.t4170 {
+    background-position: -70px -140px;
+}
+
+.t4171 {
+    background-position: -560px 0px;
+}
+
+.t4173 {
+    background-position: -490px -140px;
+}
+
+.t4189 {
+    background-position: -420px -70px;
+}
+
+.t4176 {
+    background-position: -490px -70px;
+}
+
+.t4178 {
+    background-position: -70px -70px;
+}
+
+.t4180 {
+    background-position: -210px -140px;
+}
+
+.t4181 {
+    background-position: -560px -140px;
+}
+
+.t4183 {
+    background-position: -140px -70px;
+}
+
+.t4182 {
+    background-position: -630px -140px;
+}
+
+.t4184 {
+    background-position: -280px -140px;
+}
+
+.t4186 {
+    background-position: -210px 0px;
+}
+
+.t4187 {
+    background-position: -210px -70px;
+}
+
+.t4188 {
+    background-position: -280px 0px;
+}
+
+.t4175 {
+    background-position: -630px 0px;
+}
+
+.t4179 {
+    background-position: -560px -70px;
+}
+
+.t4160 {
+    background-position: -280px -70px;
+}
+
+.t4164 {
+    background-position: -350px 0px;
+}
+
+.t4169 {
+    background-position: -350px -70px;
+}
+
+.t4177 {
+    background-position: -140px 0px;
+}
+
+.t4174 {
+    background-position: -140px -140px;
+}
+
+.t4157 {background-position:-700px -70px;}
+.t39216 {background-position:-700px -140px;}
+
+.stadium {
+    margin: auto;
+    background-image: url('/assets/stadium_logo_sprite.png');
+    width: 90px;
+    height: 90px;
+}
+
+.st4173 {
+    background-position: -18px -5px;
+}
+
+.st4163 {
+    background-position: -151px -5px;
+}
+
+.st4160 {
+    background-position: -284px -5px;
+}
+
+.st4172 {
+    background-position: -417px -5px;
+}
+
+.st4164 {
+    background-position: -550px -5px;
+}
+
+.st4162 {
+    background-position: -683px -5px;
+}
+
+.st4182 {
+    background-position: -18px -110px;
+}
+
+.st4184 {
+    background-position: -151px -110px;
+}
+
+.st4189 {
+    background-position: -284px -110px;
+}
+
+.st4187 {
+    background-position: -417px -110px;
+}
+
+.st4166 {
+    background-position: -550px -110px;
+}
+
+.st4177 {
+    background-position: -683px -110px;
+}
+
+.st4159 {
+    background-position: -18px -215px;
+}
+
+.st4174 {
+    background-position: -151px -210px;
+}
+
+.st4179 {
+    background-position: -284px -210px;
+}
+
+.st4178 {
+    background-position: -417px -215px;
+}
+
+.st4175 {
+    background-position: -550px -215px;
+}
+
+.st4186 {
+    background-position: -683px -215px;
+}
+
+.st4167 {
+    background-position: -18px -320px;
+}
+
+.st4165 {
+    background-position: -151px -320px;
+}
+
+.st4169 {
+    background-position: -284px -320px;
+}
+
+.st4170 {
+    background-position: -417px -320px;
+}
+
+.st4168 {
+    background-position: -550px -320px;
+}
+
+.st4161 {
+    background-position: -683px -320px;
+}
+
+.st4181 {
+    background-position: -18px -425px;
+}
+
+.st4180 {
+    background-position: -151px -425px;
+}
+
+.st4176 {
+    background-position: -284px -425px;
+}
+
+.st4183 {
+    background-position: -417px -425px;
+}
+
+.st4171 {
+    background-position: -550px -415px;
+}
+
+.st4188 {
+    background-position: -683px -415px;
+}
+
+.modal-open .modal {
+    z-index:999050 !important;
+}
+.tooltip-inner {
+    max-width: 350px;
+    /* If max-width does not work, try using width instead */
+    width: 350px;
+    background-color: #fff;
+    border: 1px solid #404040;
+    color: #333;
+}
+.fa-Starting:before{
+    content: "\f058";
+}
+.fa-Suspended:before{
+    content: "\f023";
+}
+.fa-Out-for-Season:before{
+    content: "\f05e";
+}
+.fa-Injured:before,.i-Questionable:before,.i-Doubtful:before,.i-Probable:before {
+    content: "\f0fa";
+}
+.fa-Active:before, .fa-Out:before {
+    content: "\f111";
+ }
+.i-Active, .i-Starting, .i-Probable{
+    color:green;
+}
+.i-Injured,.i-Out,.i-Suspended,.i-Out-for-Season{
+    color:red;
+}
+.i-Questionable{
+    color:blue;
+}
+.i-Doubtful{
+    color:orange;
+}
