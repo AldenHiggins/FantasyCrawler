@@ -1,0 +1,936 @@
+var LeadDyno = LeadDyno || (function() {
+    // This is the core LeadDyno singleton code.
+
+    var _logger = null;
+
+    var _tracking_id = null;
+    var _etag = null;
+
+    var _fingerprintObj = {};
+    var _fingerprint = null;
+
+    var _is_mobile = false;
+
+    var _proxy = null;
+
+    var _url = 'https://collector.leaddyno.com/';
+
+    var COOKIE_URL = 'LD_U';
+    var COOKIE_REFERRER = 'LD_R';
+    var COOKIE_TRACKING_ID = 'LD_T';
+    var COOKIE_LEAD_DATA = 'LD_L';
+    var COOKIE_PURCHASE_DATA = 'LD_P';
+    var COOKIE_CANCEL_DATA = 'LD_X';
+    var COOKIE_EXT_ID = 'LD_EXT';
+    var COOKIE_STATE = 'LD_S';
+    var COOKIE_GOOGLE = 'LD_G';
+    var COOKIE_ETAG_ID = 'LD_E';
+
+    var $;
+    var _ld_ready = false;
+    var _readyHandlers = [];
+
+    var _ld_iframe_mode = (window.lead_dyno_iframe_mode == true);
+    var _ld_cookie_prefix = (window.lead_dyno_cookie_prefix || "");
+
+    // Fingerprint code from https://raw.github.com/Valve/fingerprintjs/master/fingerprint.min.js
+    // includes slight tweak to keep Fingerprint object in our own namespace
+    !function(t,o){"use strict";var r=function(t){var r=Array.prototype.forEach,e=Array.prototype.map;this.each=function(t,e,a){if(null!==t)if(r&&t.forEach===r)t.forEach(e,a);else if(t.length===+t.length){for(var n=0,h=t.length;h>n;n++)if(e.call(a,t[n],n,t)==={})return}else for(var o in t)if(t.hasOwnProperty(o)&&e.call(a,t[o],o,t)==={})return},this.map=function(t,r,a){var n=[];return null==t?n:e&&t.map===e?t.map(r,a):(this.each(t,function(t,e,h){n[n.length]=r.call(a,t,e,h)}),n)},t&&(this.hasher=t)};r.prototype={get:function(){var r=[];r.push(navigator.userAgent),r.push(navigator.language),r.push(screen.colorDepth),r.push((new Date).getTimezoneOffset()),r.push(!!t.sessionStorage),r.push(this.hasLocalStorage());var e=this.map(navigator.plugins,function(t){var r=this.map(t,function(t){return[t.type,t.suffixes].join("~")}).join(",");return[t.name,t.description,r].join("::")},this).join(";");return r.push(e),this.hasher?this.hasher(r.join("###"),31):this.murmurhash3_32_gc(r.join("###"),31)},murmurhash3_32_gc:function(t,r){var e,a,n,h,o,i,s,c;for(e=3&t.length,a=t.length-e,n=r,o=3432918353,i=461845907,c=0;a>c;)s=255&t.charCodeAt(c)|(255&t.charCodeAt(++c))<<8|(255&t.charCodeAt(++c))<<16|(255&t.charCodeAt(++c))<<24,++c,s=4294967295&(65535&s)*o+((65535&(s>>>16)*o)<<16),s=s<<15|s>>>17,s=4294967295&(65535&s)*i+((65535&(s>>>16)*i)<<16),n^=s,n=n<<13|n>>>19,h=4294967295&5*(65535&n)+((65535&5*(n>>>16))<<16),n=(65535&h)+27492+((65535&(h>>>16)+58964)<<16);switch(s=0,e){case 3:s^=(255&t.charCodeAt(c+2))<<16;case 2:s^=(255&t.charCodeAt(c+1))<<8;case 1:s^=255&t.charCodeAt(c),s=4294967295&(65535&s)*o+((65535&(s>>>16)*o)<<16),s=s<<15|s>>>17,s=4294967295&(65535&s)*i+((65535&(s>>>16)*i)<<16),n^=s}return n^=t.length,n^=n>>>16,n=4294967295&2246822507*(65535&n)+((65535&2246822507*(n>>>16))<<16),n^=n>>>13,n=4294967295&3266489909*(65535&n)+((65535&3266489909*(n>>>16))<<16),n^=n>>>16,n>>>0},hasLocalStorage:function(){try{return!!t.localStorage}catch(r){return!0}}},o.Fingerprint=r}(window,_fingerprintObj);
+
+    _init();
+    if(!_ld_iframe_mode) {
+      _initJQuery();
+    }
+
+    function _initJQuery() {
+      /* Load $ if not present */
+      if (window.jQuery === undefined || window.jQuery.fn.jquery !== '1.10.1') {
+        var script_tag = document.createElement('script');
+        script_tag.setAttribute("type", "text/javascript");
+        script_tag.setAttribute("src", "//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js");
+        if (script_tag.readyState) {
+          script_tag.onreadystatechange = function () { // For old versions of IE
+            if (this.readyState == 'complete' || this.readyState == 'loaded') {
+              scriptLoadHandler();
+            }
+          };
+        } else { // Other browsers
+          script_tag.onload = scriptLoadHandler;
+        }
+        (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script_tag);
+      } else {
+        $ = window.jQuery;
+        main();
+      }
+    }
+
+    function scriptLoadHandler() {
+        $ = window.jQuery.noConflict(true);
+        main();
+    }
+
+    function main() {
+        $(document).ready(function() {
+            if (LeadDyno) {
+                documentReadyHandler();
+            }
+        });
+    }
+
+    function documentReadyHandler() {
+
+        if (_ld_ready) {
+            return;
+        }
+
+            _ld_ready = true;
+
+            setCookie(COOKIE_TRACKING_ID, _tracking_id);
+
+            // class substitution code
+            $('.leaddyno_visit_id').val(_tracking_id);
+            $('.leaddyno_key').val(LeadDyno.key);
+
+            // link variable substitution code
+            $('a').each(function() {
+                var url = $(this).attr('href');
+                if (url && typeof(url) == 'string') {
+                    if (url.indexOf('{{leaddyno.visit.id}}') > 0) {
+                        url = url.replace(/\{\{leaddyno\.visit\.id\}\}/gi, _tracking_id);
+                        $(this).attr('href', url);
+                    }
+                    if (url.indexOf('{{leaddyno.key}}') > 0) {
+                        url = url.replace(/\{\{leaddyno\.key\}\}/gi, LeadDyno.key);
+                        $(this).attr('href', url);
+                    }
+                }
+            });
+
+
+            for (i = 0; i < _readyHandlers.length; i++) {
+                _readyHandlers[i]();
+            }
+
+      initShareWidgets()
+
+    }
+
+    function onReady(handler) {
+        if (_ld_ready) {
+            handler();
+        } else {
+            _readyHandlers.push(handler);
+        }
+    }
+
+    function isEmail(email) {
+        return /\S+@\S+\.\S+/.test(email);
+    }
+
+    function _init() {
+        if(_ld_iframe_mode) {
+          try {
+            if (window.addEventListener)  // W3C DOM
+              window.addEventListener("message", function(msg){
+                if(msg.data.type == "ld_send_tracking_id") {
+                  _tracking_id = msg.data.tracking_id;
+                  setCookie(COOKIE_TRACKING_ID, msg.data.tracking_id);
+                  _initJQuery();
+                }
+              });
+            else if (elem.attachEvent) { // IE DOM
+              window.attachEvent("onmessage", function(msg){
+                if(msg.data.type == "ld_send_tracking_id") {
+                  _tracking_id = msg.data.tracking_id;
+                  setCookie(COOKIE_TRACKING_ID, msg.data.tracking_id);
+                  _initJQuery();
+                }
+              });
+            }
+            window.top.postMessage({type: "ld_get_tracking_id"}, "*");
+          } catch (e) {
+            log("Could not establish iframe message handler! " + e);
+          }
+        } else {
+          // singleton is not setup yet, so make sure to not call any methods on 'LeadDyno' object
+          var cookieTrackingId = getCookie(COOKIE_TRACKING_ID);
+          if (!cookieTrackingId) {
+            if (!_tracking_id) {
+              _tracking_id = generateUUID();
+              setCookie(COOKIE_TRACKING_ID, _tracking_id);
+            }
+          } else {
+            _tracking_id = cookieTrackingId;
+          }
+          try {
+            if (window.addEventListener)  // W3C DOM
+              window.addEventListener("message", function(msg){
+                if(msg.data.type == "ld_get_tracking_id") {
+                  msg.source.postMessage({type: "ld_send_tracking_id", tracking_id: _tracking_id}, "*");
+                }
+              });
+            else if (elem.attachEvent) { // IE DOM
+              window.attachEvent("onmessage", function(msg){
+                if(msg.data.type == "ld_get_tracking_id") {
+                  msg.source.postMessage({type: "ld_send_tracking_id", tracking_id: _tracking_id}, "*");
+                }
+              });
+            }
+          } catch (e) {
+            log("Could not establish enclosing window message handler! " + e);
+          }
+        }
+
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            _is_mobile = true;
+        }
+
+        _fingerprint = new _fingerprintObj.Fingerprint().get();
+        if (_is_mobile || !_fingerprint || _fingerprint == 2147483647) {
+            _fingerprint = '';
+        }
+    }
+
+    function initShareWidgets() {
+
+      var encodeIfDefined = function(val) {
+        if(val) {
+          return encode(val)
+        } else {
+          return ""
+        }
+      };
+
+      var args = "&origin_url=" + encodeIfDefined(document.URL);
+      args += "&key=" + encodeIfDefined(LeadDyno.key);
+      args += "&title=" + encodeIfDefined(document.title);
+      args += "&description=" + encodeIfDefined($("meta[name=description]").attr('content'));
+      args += "&visitor_id=" + encodeIfDefined(_tracking_id);
+      args += "&og_title=" + encodeIfDefined($('meta[name="og:title"]').attr('content'));
+      args += "&og_description=" + encodeIfDefined($('meta[name="og:description"]').attr('content'));
+      args += "&og_image=" + encodeIfDefined($('meta[name="og:image"]').attr('content'));
+      args += "&og_url=" + encodeIfDefined($('meta[name="og:url"]').attr('content'));
+      args += "&ld_mail=" + encodeIfDefined($('meta[name="ld:mail"]').attr('content'));
+      args += "&ld_mail_subject=" + encodeIfDefined($('meta[name="ld:mail:subject"]').attr('content'));
+      args += "&ld_twitter=" + encodeIfDefined($('meta[name="ld:tweet"]').attr('content'));
+      args += "&ld_facebook=" + encodeIfDefined($('meta[name="ld:facebook"]').attr('content'));
+      args += "&ld_facebook_title=" + encodeIfDefined($('meta[name="ld:facebook:title"]').attr('content'));
+      args += "&ld_pinterest=" + encodeIfDefined($('meta[name="ld:pinterest"]').attr('content'));
+      args += "&ld_pinterest_img=" + encodeIfDefined($('meta[name="ld:pinterest:img"]').attr('content'));
+      $(".ld-share-link").each(function(){
+        $(this).attr('href', $(this).attr('href') + args);
+      });
+    }
+
+    function log(val) {
+        if (_logger) {
+            var message = "LeadDyno Log [" + new Date() + "] - " + val;
+            _logger(message);
+        }
+    }
+
+    function encode(val) {
+        if (window.encodeURIComponent) {
+            return encodeURIComponent(val);
+        } else {
+            //noinspection JSDeprecatedSymbols
+            return escape(val);
+        }
+    }
+
+    function decode(val) {
+        if (window.decodeURIComponent()) {
+            return decodeURIComponent(val);
+        } else {
+            //noinspection JSDeprecatedSymbols
+            return unescape(val);
+        }
+    }
+
+    var jsonEncode = typeof JSON === 'object' && JSON.stringify ? JSON.stringify :  function (obj) {
+        var t = typeof (obj);
+        if (t != "object" || obj === null) {
+            // simple data type
+            if (t == "string") obj = quoteString(obj);
+            return String(obj);
+        } else {
+            // recurse array or object
+            var n, v, json = [], arr = (obj && obj.constructor == Array);
+
+            for (n in obj) {
+                v = obj[n];
+                t = typeof(v);
+                if (obj.hasOwnProperty(n)) {
+                    if (t == "string") v = quoteString(v); else if (t == "object" && v !== null) v = jsonEncode(v);
+                    json.push((arr ? "" : quoteString(n+':')) + String(v));
+                }
+            }
+            return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+        }
+    };
+    var jsonDecode = typeof JSON === 'object' && JSON.parse ? JSON.parse : function (str) {
+        return eval('(' + str + ')');
+    };
+    var escape = /["\\\x00-\x1f\x7f-\x9f]/g,
+        meta = {
+            '\b': '\\b',
+            '\t': '\\t',
+            '\n': '\\n',
+            '\f': '\\f',
+            '\r': '\\r',
+            '"' : '\\"',
+            '\\': '\\\\'
+        };
+    var quoteString = function (str) {
+        if (str.match(escape)) {
+            return '"' + str.replace(escape, function (a) {
+                var c = meta[a];
+                if (typeof c === 'string') {
+                    return c;
+                }
+                c = a.charCodeAt();
+                return '\\u00' + Math.floor(c / 16).toString(16) + (c % 16).toString(16);
+            }) + '"';
+        }
+        return '"' + str + '"';
+    };
+
+  function processCookieName(name) {
+    if(_ld_cookie_prefix) {
+     return _ld_cookie_prefix + "_" + name;
+    } else {
+      return name;
+    }
+  }
+
+  function getCookie(name) {
+    name = processCookieName(name);
+    log("Getting Cookie " + name);
+        var i, x, y, c = document.cookie.split(";");
+        for (i = 0; i < c.length; i++) {
+            x = c[i].substr(0, c[i].indexOf("="));
+            y = c[i].substr(c[i].indexOf("=") + 1);
+            x = x.replace(/^\s+|\s+$/g, "");
+            if (x == name) {
+                return decode(y);
+            }
+        }
+        return '';
+    }
+
+    function deleteCookie(name) {
+      name = processCookieName(name);
+      log("Deleting Cookie " + name);
+        if (_proxy && _proxy.deleteCookie) {
+            _proxy.deleteCookie(name);
+        } else {
+            document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
+        }
+    }
+
+    function setCookie(name, val, timeout) {
+        name = processCookieName(name);
+        timeout = typeof timeout !== 'undefined' ? timeout : (100 * (86400 * 365)); // defaults to 100 years
+        timeout *= 1000; // ms to seconds
+        log("Setting cookie  " + name + " to value " + val);
+        var d = new Date();
+        d.setTime(d.getTime() + timeout);
+        var cookie = name + "=" + encode(val) + ";expires=" + d.toUTCString() + ";path=/";
+        if(LeadDyno && LeadDyno.domain) {
+            cookie += ";domain=." + LeadDyno.domain;
+        }
+        document.cookie = cookie;
+    }
+
+    function remote(action, args, cbFunction) {
+        log("Invoking remote " + action + " with args " + jsonEncode(args));
+
+        if (!getCookie(COOKIE_TRACKING_ID)) {
+            log("Tracking cookie is missing!");
+            return;
+        }
+
+        var d = new Date();
+        var cbName = '__LDCB_'+ d.getTime()+'_'+Math.floor(Math.random()*1000000);
+        log("creating callback " + cbName);
+
+        window[cbName] = function(cbArgs) {
+            log("In callback " + cbName);
+            if (cbFunction) {
+                cbFunction(cbArgs);
+            }
+            if(args['onFinish']) {
+                args['onFinish'](cbArgs);
+            }
+        };
+
+        var argsStr = "url=" + encode(getCookie(COOKIE_URL));
+        argsStr += "&referrer=" + encode(getCookie(COOKIE_REFERRER));
+        argsStr += "&agent=" + encode(navigator.userAgent);
+        argsStr += "&js=true";
+        argsStr += "&ld_t=" + encode(getCookie(COOKIE_TRACKING_ID));
+        argsStr += "&ld_ext=" + encode(getCookie(COOKIE_EXT_ID));
+        argsStr += "&ld_fp=" + encode(_fingerprint);
+        argsStr += "&key=" + (args.key || LeadDyno.key || '');
+        argsStr += "&callback="+cbName;
+
+        for (var key in args) {
+            if(key != 'onFinish' && key != 'key') {
+                argsStr += "&" + key + "=" + encode(args[key]);
+            }
+        }
+
+        if (_proxy && _proxy.ajax) {
+            var res = _proxy.ajax(_url + action + '?' + argsStr);
+            if (res == undefined || res == true) {
+                window[cbName](); // call callback
+            }
+        } else {
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = "async";
+            s.src =  _url + action + '?' + argsStr;
+
+            log("Calling remote action " + s.src);
+
+            if (document.getElementsByTagName('head')[0]) {
+                document.getElementsByTagName('head')[0].appendChild(s);
+            } else {
+                document.getElementsByTagName('body')[0].appendChild(s);
+            }
+        }
+
+    }
+
+    function saveInfo() {
+        if (isNewAffiliate()) {
+            setCookie(COOKIE_URL, getCurrentUrl());
+            setCookie(COOKIE_REFERRER, getCurrentReferrer());
+        }
+        setCookie(COOKIE_TRACKING_ID, _tracking_id);
+    }
+
+    function cleanUpHash() {
+        if (window.location.hash.indexOf("#_a_") == 0 || window.location.hash.indexOf("#_l_") == 0) {
+            if (window.location.hash.indexOf("__") > 0) {
+                window.location.hash = window.location.hash.substring(window.location.hash.indexOf("__") + 2, window.location.hash.length);
+            } else {
+                window.location.hash = "";
+            }
+        }
+    }
+
+    function getCurrentUrl() {
+        if (_proxy && _proxy.url) {
+            return _proxy.url;
+        } else {
+            return window.location.href;
+        }
+    }
+
+    function getCurrentReferrer() {
+        if (_proxy && _proxy.referrer) {
+            return _proxy.referrer;
+        } else {
+            return document.referrer;
+        }
+    }
+
+    function getQueryParam(url, name) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var query = url.substr(url.indexOf('?'));
+        var hashIndex = query.indexOf('#');
+        if (hashIndex > -1) {
+            query = query.substr(0, hashIndex);
+        }
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(query);
+        return results == null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+
+    function isNewVisit() {
+        var s = getCookie(COOKIE_STATE);
+        if (s == 'click') { // support legacy functionality
+            setCookie(COOKIE_STATE, new Date(), 300);
+            return true;
+        } else if (s != "") {
+            return false;
+        } else {
+            var d = new Date();
+            setCookie(COOKIE_STATE, d.getTime(), 300);
+            return true;
+        }
+    }
+
+    function getHashTrackingCode(url) {
+        if(url.indexOf("#_a_") >= 0 || url.indexOf("#_l_") >= 0) {
+            var str = url.substring(url.indexOf("#_") + 2, url.length);
+            if(str.indexOf("__") >= 0) {
+                return str.substring(0, str.indexOf("__"));
+            } else {
+                return str;
+            }
+        }
+        return null;
+    }
+
+    function isNewAffiliate() {
+        var existingUrl = getCookie(COOKIE_URL);
+        if (existingUrl == "") {
+            return true;
+        } else {
+            var existingAfmc = getHashTrackingCode(existingUrl) || getQueryParam(existingUrl, 'afmc');
+            var windowAfmc = getHashTrackingCode(getCurrentUrl()) || getQueryParam(getCurrentUrl(), "afmc");
+            if (windowAfmc && existingAfmc != windowAfmc) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function generateUUID() {
+        var d = new Date().getTime();
+        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = (d + Math.random()*16)%16 | 0;
+            d = Math.floor(d/16);
+            return (c=='x' ? r : (r&0x7|0x8)).toString(16);
+        });
+        return uuid;
+    }
+
+    function uploadLead(args) {
+        remote("lead", args, function(result) {
+            deleteCookie(COOKIE_LEAD_DATA); // clear data cache on success
+            setTimeout(function(){LeadDyno.updateGAInfo(args);}, 300);
+        });
+    }
+
+    function uploadPurchase(args) {
+        remote("purchase", args, function(result) {
+            deleteCookie(COOKIE_PURCHASE_DATA); // clear data cache on success
+        });
+    }
+
+
+    function uploadCancellation(args) {
+        remote("cancel", args, function(result) {
+            deleteCookie(COOKIE_CANCEL_DATA); // clear data cache on success
+        });
+    }
+
+
+    function uploadClick(args) {
+        args = typeof args !== 'undefined' ? args : {};
+        args['page_url'] = getCurrentUrl();
+        args['page_referrer'] = getCurrentReferrer();
+        remote("clickstream", args);
+    }
+
+    function uploadEvent(args) {
+        args = typeof args !== 'undefined' ? args : {};
+        args['page_url'] = getCurrentUrl();
+        args['page_referrer'] = getCurrentReferrer();
+        remote("event", args);
+    }
+
+    function uploadCachedData() {
+        // possibly upload previously captured lead data
+        var leadData = getCookie(COOKIE_LEAD_DATA);
+        if (leadData) {
+            uploadLead(jsonDecode(leadData));
+        }
+
+        // possibly upload previously captured purchase data
+        var purchaseData = getCookie(COOKIE_PURCHASE_DATA);
+        if (purchaseData) {
+            uploadPurchase(jsonDecode(purchaseData));
+        }
+
+        // possibly upload previously captured cancellation data
+        var cancelData = getCookie(COOKIE_CANCEL_DATA);
+        if (cancelData) {
+            uploadCancellation(jsonDecode(cancelData));
+        }
+    }
+
+    function cleanupArgs(args, cb) {
+        args = typeof args === 'function' ? {onFinish: args} : args;
+        args = typeof args !== 'undefined' ? args : {};
+        if (cb) {
+            args['onFinish'] = cb;
+        }
+        if (args['key']) {
+            LeadDyno.key = args['key'];
+        }
+        return args;
+    }
+
+    function drawTagImgOld() {
+        log("drawing tag img");
+        var oImg=document.createElement("img");
+        var d = new Date();
+
+        var u = _url+'t?key='+encode(LeadDyno.key);
+        u += '&ld_fp='+encode(_fingerprint);
+        u += '&ld_t='+encode(_tracking_id);
+        u += '&ts='+ d.getTime();
+
+        oImg.setAttribute('src', u);
+        oImg.width='1';
+        oImg.height='1';
+        document.body.appendChild(oImg);
+    }
+
+    function drawTagScript() {
+        log("drawing tag script");
+        var d = new Date();
+
+        var u = _url+'x?key='+encode(LeadDyno.key);
+        u += '&ld_fp='+encode(_fingerprint);
+        u += '&ld_t='+encode(_tracking_id);
+        u += '&ts='+ d.getTime();
+
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = "async";
+        s.src =  u;
+
+        if (document.getElementsByTagName('head')[0]) {
+            document.getElementsByTagName('head')[0].appendChild(s);
+        } else {
+            document.getElementsByTagName('body')[0].appendChild(s);
+        }
+    }
+
+    // Core singleton
+    //noinspection JSUnusedGlobalSymbols
+    return {
+
+        // call on every page - tracks visitors
+        recordVisit : function(args, cb) {
+            if(_ld_iframe_mode) {
+               return; // parent frame should establish visitor info
+            }
+            log("called recordVisit()");
+            args = cleanupArgs(args, cb);
+
+            if (window.lead_dyno_affiliate_code) {
+                args['code'] = window.lead_dyno_affiliate_code;
+            }
+            if (window.lead_dyno_affiliate_email) {
+                args['affiliate'] = window.lead_dyno_affiliate_email;
+            }
+
+            uploadCachedData();
+
+            // see if we need to call visit again
+            if (isNewVisit() || isNewAffiliate()) {
+                saveInfo(); // save request info locally
+                remote("visit", args, function(result) {
+                    //setTimeout(function(){LeadDyno.updateGAInfo(args);}, 300);
+                });
+                drawTagScript();
+            } else {
+                if(args['onFinish']) {
+                    args['onFinish']({success: true, local: true});
+                }
+            }
+            cleanUpHash();
+            uploadClick();
+        },
+
+        // call on lead form submission
+        recordLead : function(email, args, cb) {
+            log("called recordLead()");
+            args = cleanupArgs(args, cb);
+            args.email = email;
+
+            saveInfo(); // save request info locally
+
+            setCookie(COOKIE_LEAD_DATA, jsonEncode(args));
+            uploadLead(args);
+        },
+
+        // call on purchase, such as going from trial to paid
+        recordPurchase : function(email, args, cb) {
+            log("called recordPurchase()");
+            if (typeof(email) == 'string') {
+                args = cleanupArgs(args, cb);
+                args.email = email;
+            } else {
+                args = cleanupArgs(email, args);
+            }
+            args.purchase_code = args.purchase_code || _tracking_id;
+
+            saveInfo(); // save request info locally
+
+            setCookie(COOKIE_PURCHASE_DATA, jsonEncode(args));
+            uploadPurchase(args);
+        },
+
+        // call when cancelling their service
+        recordCancellation : function(email, args, cb) {
+            log("called recordCancellation()");
+            if (typeof(email) == 'string') {
+                args = cleanupArgs(args, cb);
+                args.email = email;
+            } else {
+                args = cleanupArgs(email, args);
+            }
+            args.purchase_code = args.purchase_code || _tracking_id;
+
+            saveInfo(); // save request info locally
+
+            setCookie(COOKIE_CANCEL_DATA, jsonEncode(args));
+            uploadCancellation(args);
+        },
+
+        recordEvent : function(event, args, cb) {
+            args = cleanupArgs(args, cb);
+
+            var newArgs = {};
+            for (var key in args) {
+                if (key != 'onFinish') {
+                    newArgs['data_'+key] = args[key];
+                }
+            }
+            newArgs['event'] = event;
+            if (args['onFinish']) {
+                newArgs['onFinish'] = args['onFinish'];
+            }
+
+            uploadEvent(newArgs);
+        },
+
+        setETag : function(etag) {
+            _etag = etag;
+            setCookie(COOKIE_ETAG_ID, etag);
+        },
+
+        // Called after the JSONP request finishes
+        // NO LONGER USED - We now dynamically create a callback each jsonp request
+        finish : function(args) {
+            log("called finish()");
+        },
+
+        updateGAInfo : function(args) {
+            if(getCookie('__utmz') != "" && getCookie(COOKIE_GOOGLE) == ""){
+                args = args || {};
+                args['__utmz'] = getCookie('__utmz');
+                args['__utma'] = getCookie('__utma');
+                remote('ga', args, function(){
+                    setCookie(COOKIE_GOOGLE, '1');
+                });
+            }
+        },
+
+
+        initPaypal : function() {
+
+            onReady(function() {
+                $('form').each(function(i, f) {
+                    if (f.action && typeof(f.action) == 'string' && f.action.indexOf('paypal.com') > 0 && f.action.indexOf('/cgi-bin/webscr') > 0) {
+                        $(f).append('<input type="hidden" name="custom" value="'+_tracking_id+'"/>');
+                        $(f).append('<input type="hidden" name="notify_url" value="'+_url+'paypal_ipn?key='+LeadDyno.key+'"/>');
+                    }
+                });
+                $('a').each(function() {
+                    var url = $(this).attr('href');
+                    if (url && typeof(url) == 'string' && url.indexOf('paypal.com') > 0 && url.indexOf('/cgi-bin/webscr') > 0) {
+                        url = url + '&custom='+_tracking_id+'&notify_url='+encode(_url+'paypal_ipn?key='+LeadDyno.key);
+                        $(this).attr('href', url);
+                    }
+                });
+            });
+
+        },
+
+
+        initCoinbase : function() {
+            onReady(function() {
+                $('.coinbase-button').each(function() {
+                    $(this).attr('data-custom', _tracking_id);
+                });
+                $('iframe').each(function() {
+                    var url = $(this).attr('src');
+                    if (url && typeof(url) == 'string' && url.indexOf('coinbase.com/buttons') > 0) {
+                        url = url + '&custom='+_tracking_id;
+                        $(this).attr('src', url);
+                    }
+                    if (url && typeof(url) == 'string' && url.indexOf('coinbase.com/inline_payments') > 0) {
+                        url = url + '&c='+_tracking_id;
+                        $(this).attr('src', url);
+                    }
+                });
+                $('a').each(function() {
+                    var url = $(this).attr('href');
+                    if (url && typeof(url) == 'string' && url.indexOf('coinbase.com/checkouts') > 0) {
+                        url = url + '?c='+_tracking_id;
+                        $(this).attr('href', url);
+                    }
+                });
+            });
+        },
+
+
+        initShopify : function() {
+            var ldExtId = getCookie(COOKIE_EXT_ID);
+            var cartToken = getCookie('cart');
+            if (cartToken && ldExtId != cartToken) {
+                setCookie(COOKIE_EXT_ID, cartToken);
+                deleteCookie(COOKIE_STATE); // make sure visit goes up immediately with ext_id
+            }
+            if ($ && !_ld_ready) { // handle race condition with async loader
+                documentReadyHandler();
+            }
+        },
+
+        autoWatch : function(callback) {
+            LeadDyno.watch('input[type=text]', callback); // watch all text input elements
+            LeadDyno.watch('input[type=email]', callback); // watch all email input elements
+        },
+
+        watch : function(selector, callback) {
+            onReady(function(){
+                $(document).on('change', selector, function(){
+                    var val = $(this).val();
+                    if(isEmail(val)) {
+                        LeadDyno.recordLead(val, {}, callback);
+                    }
+                });
+            });
+        },
+
+        ready: function(handler) {
+            onReady(handler);
+        },
+
+        isReady: function() {
+            return _ld_ready;
+        },
+
+        noop: function() {},
+
+        devTools : {
+
+            reset : function() {
+                deleteCookie(COOKIE_URL);
+                deleteCookie(COOKIE_REFERRER);
+                deleteCookie(COOKIE_TRACKING_ID);
+                deleteCookie(COOKIE_EXT_ID);
+                deleteCookie(COOKIE_LEAD_DATA);
+                deleteCookie(COOKIE_PURCHASE_DATA);
+                deleteCookie(COOKIE_CANCEL_DATA);
+                deleteCookie(COOKIE_STATE);
+                deleteCookie(COOKIE_GOOGLE);
+                _tracking_id = null;
+                _init();
+            },
+
+            ping : function() {
+
+            },
+
+            uuid : function() {
+                return generateUUID();
+            },
+
+            setLogger : function(logger) {
+                _logger = logger;
+            },
+
+            getState : function() {
+                return {
+                    COOKIE_URL: getCookie(COOKIE_URL),
+                    COOKIE_REFERRER: getCookie(COOKIE_REFERRER),
+                    COOKIE_TRACKING_ID: getCookie(COOKIE_TRACKING_ID),
+                    COOKIE_LEAD_DATA: getCookie(COOKIE_LEAD_DATA),
+                    COOKIE_PURCHASE_DATA: getCookie(COOKIE_PURCHASE_DATA),
+                    COOKIE_CANCEL_DATA: getCookie(COOKIE_CANCEL_DATA),
+                    COOKIE_STATE: getCookie(COOKIE_STATE),
+                    COOKIE_GOOGLE: getCookie(COOKIE_GOOGLE)
+                };
+            },
+
+            setBrowserProxy : function(proxy) {
+                _proxy = proxy;
+            },
+
+            setServerUrl : function(url) {
+                _url = url;
+                if (_url.charAt(_url.length-1) != '/') {
+                    _url += '/';
+                }
+            },
+
+            getTrackingId : function() {
+                return _tracking_id;
+            },
+
+            getFingerprint : function() {
+                return _fingerprint;
+            },
+
+            getJQuery : function() {
+                return $;
+            },
+
+            getAffiliateCode : function() {
+                return getHashTrackingCode(getCookie(COOKIE_URL));
+            },
+
+            isMobile : function() {
+                return _is_mobile;
+            },
+
+            parseTrackingCode : function(url) {
+                return getHashTrackingCode(url)
+            },
+
+            cleanUpHash : function() {
+                cleanUpHash();
+            },
+
+            forceNewVisit : function() {
+                deleteCookie(COOKIE_STATE);
+            },
+
+            getQueryParam : getQueryParam,
+            log: log,
+            jsonEncode: jsonEncode,
+            jsonDecode: jsonDecode
+
+        },
+
+
+        // ** DEPRECATED METHODS **
+
+        // Ping the server to register a click
+        click : function(args) {
+            log("called click()");
+            this.recordVisit(args);
+        },
+
+        // Register the user
+        register : function(args) {
+            log("called register()");
+            args = typeof args !== 'undefined' ? args : {};
+            this.recordLead(args.email, args);
+        },
+
+        capture : function(email, args) {
+            log("called capture()");
+            this.recordLead(email, args);
+        },
+
+        visit : function(args) {
+            log("Called visit");
+            args = typeof args !== 'undefined' ? args : {};
+            this.recordVisit(args);
+            if (args.email) {
+                this.recordLead(args.email, args);
+            }
+        }
+
+    };
+})();

@@ -1,0 +1,2 @@
+.yui3-ad{margin:0
+auto}.yui3-ad .chrome-fix{-webkit-transform:none}.yui3-ad-fixed{position:fixed !important;z-index:10000 !important;left:50% !important}.yui3-ad-transition{transition:top 0.5s ease-in-out}

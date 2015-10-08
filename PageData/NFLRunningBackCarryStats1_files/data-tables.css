@@ -1,0 +1,100 @@
+table.data-table1 {border-collapse:separate;}
+.data-table1 td, .data-table1 th {font-family:arial; font-size:11px; padding:6px 3px;}
+	.data-table1 .thd1 td {background:#5b7a9e url(../../img/tables/thead1-bg.gif) repeat-x top left; color:#fff; font-weight:bold;}
+	.data-table1 .thd1 a:link, .data-table1 .thd1 a:visited {color:#fff; text-decoration:underline;}
+	.data-table1 .thd1 a:hover {color:#fc0; text-decoration:underline;}
+	.data-table1 .thd1 {background:#5b7a9e url(../../img/tables/thead1-bg.gif) repeat-x top left; color:#fff; font-weight:bold; padding:6px 3px; text-align:left; font-family:arial; font-size:11px;}
+	.data-table1 .thd2 td, .data-table1 .thd2 th {background-color:#eff2f6; color:#000; font-weight:bold;}
+	.data-table1 .thd2 th {text-align:center}
+	.data-table1 .thd3 td {background-color:#eee; color:#000; font-weight:normal;}
+	.data-table1 .tft1 td {background-color:#fff; color:#000; font-weight:normal;}
+	.data-table1 .tbdy1 td, .data-table1 td.tbdy1 {background-color:#fff; color:#000; border-bottom:1px dotted #ddd;}
+	.data-table1 .tbdy-sorted td, .data-table1 td.tbdy-sorted {background-color:#eff2f6; color:#000; border-bottom:1px dotted #ddd;}
+	.data-table1 .tbdy1 td.sorted {background-color:#eff2f6;}
+	.data-table1 .tbdy-spacer {height:10px;}
+	.data-table1 .right {text-align:right}
+	.data-table1 .left {text-align:left}
+	.data-table1 .AFCcolors td, .data-table1 .APRcolors td {background-color:#B50023; background:#B50023;}
+	.data-table1 .NFCcolors td, .data-table1 .NPRcolors td {background-color:#004079; background:#004079;}
+	.data-table1 td.message-no-results {padding:10px 0px 20px 0px}
+
+/* used by stats/categorystats display:table atrosity */
+/* i hate TLDs that force a certain markup style.  ugh! */
+.data-table1 th  {font-family:arial; font-size:11px; padding:6px 3px;}
+	.data-table1 th.sorted  {background-color:#ddd;}
+.data-table1 .thd2 td, .data-table1 .thd2 {background-color:#eff2f6; color:#000; font-weight:bold;}
+.data-table1 .odd td {background-color:#fff; color:#000; border-bottom:1px dotted #ddd;}
+.data-table1 .even td {background-color:#fff; color:#000; border-bottom:1px dotted #ddd;}
+.data-table1 .order1 {background-image:url(../../img/red_arrow_down.gif); background-position: 7px center; background-repeat:no-repeat; padding-left:15px; padding-right:2px;}
+.data-table1 .order2 {background-image:url(../../img/red_arrow_up.gif); background-position: 7px center; background-repeat:no-repeat; padding-left:15px; padding-right:2px;}
+
+.data-table1 .ARIcolors td, .data-table1 .ARZcolors td, .data-table1 .CardinalsColors td {background: #A1003E !important; color: #ffffff !important;}
+.data-table1 .ARIborder td, .data-table1 .ARZborder td {border-color: #A1003E !important;}
+.data-table1 .ATLcolors td, .data-table1 .FalconsColors td {background: #000 !important; color: #FFF !important;}
+.data-table1 .ATLborder td {border-color: #000 !important;}
+.data-table1 .BALcolors td, .data-table1 .RavensColors td {background: #31196B !important; color: #FFF !important;}
+.data-table1 .BALborder td {border-: #31196B !important;}
+.data-table1 .BUFcolors td, .data-table1 .BillsColors td {background: #194B8C !important; color: #FFF !important;}
+.data-table1 .BUFborder td {border-color: #194B8C !important;}
+.data-table1 .CARcolors td, .data-table1 .PanthersColors td {background: #009FD7 !important; color: #FFF !important;}
+.data-table1 .CARborder td {border-color: #009FD7 !important;}
+.data-table1 .CHIcolors td, .data-table1 .BearsColors td {background: #061E3E !important; color: #FFF !important;}
+.data-table1 .CHIborder td {border-color: #061E3E !important;}
+.data-table1 .CINcolors td, .data-table1 .BengalsColors td {background: #F05737 !important; color: #FFF !important;}
+.data-table1 .CINborder td {border-color: #F05737 !important;}
+.data-table1 .CLEcolors td, .data-table1 .CLVcolors td, .data-table1 .BrownsColors td {background: #E93825 !important; color: #FFF !important;}
+.data-table1 .CLEborder td, .data-table1 .CLVborder td {border-color: #E93825 !important;}
+.data-table1 .DALcolors td, .data-table1 .CowboysColors td {background: #162859 !important; color: #FFF !important;}
+.data-table1 .DALborder td {border-color: #162859 !important;}
+.data-table1 .DENcolors td, .data-table1 .BroncosColors td {background: #004 !important; color: #FFF !important;}
+.data-table1 .DENborder td {border-color: #004 !important;}
+.data-table1 .DETcolors td, .data-table1 .LionsColors td {background: #0069B3 !important; color: #FFF !important;}
+.data-table1 .DETborder td {border-color: #0069B3 !important;}
+.data-table1 .GBcolors td, .data-table1 .PackersColors td {background: #003B2A !important; color: #FFF !important;}
+.data-table1 .GBborder td {border-color: #003B2A !important;}
+.data-table1 .HOUcolors td, .data-table1 .TexansColors td {background: #BF093A !important; color: #FFF !important;}
+.data-table1 .HOUborder td {border-color: #BF093A !important;}
+.data-table1 .INDcolors td, .data-table1 .ColtsColors td {background: #24396A !important; color: #FFF !important;}
+.data-table1 .INDborder td {border-color: #24396A !important;}
+.data-table1 .JACcolors td, .data-table1 .JAXcolors td, .data-table1 .JaguarsColors td {background: #007B92 !important; color: #FFF !important;}
+.data-table1 .JACborder td, .data-table1 .JAXborder td {border-color: #007B92 !important;}
+.data-table1 .KCcolors td, .data-table1 .ChiefsColors td {background: #CE0226 !important; color: #FFF !important;}
+.data-table1 .KCborder td {border-color: #CE0226 !important;}
+.data-table1 .MIAcolors td, .data-table1 .DolphinsColors td {background: #007883 !important; color: #FFF !important;}
+.data-table1 .MIAborder td {border-color: #007883 !important;}
+.data-table1 .MINcolors td, .data-table1 .VikingsColors td {background: #360651 !important; color: #FFF !important;}
+.data-table1 .MINborder td {border-color: #360651 !important;}
+.data-table1 .NEcolors td, .data-table1 .PatriotsColors td {background: #243E82 !important; color: #FFF !important;}
+.data-table1 .NEborder td {border-color: #243E82 !important;}
+.data-table1 .NOcolors td, .data-table1 .SaintsColors td {background: #c9b074 !important; color: #FFF !important;}
+.data-table1 .NOborder td {border-color: #c9b074 !important;}
+.data-table1 .NYGcolors td, .data-table1 .GiantsColors td {background: #03497F !important; color: #FFF !important;}
+.data-table1 .NYGborder td {border-color: #03497F !important;}
+.data-table1 .NYJcolors td, .data-table1 .JetsColors td {background: #16452D !important; color: #FFF !important;}
+.data-table1 .NYJborder td {border-color: #16452D !important;}
+.data-table1 .OAKcolors td, .data-table1 .RaidersColors td {background: #000 !important; color: #FFF !important;}
+.data-table1 .OAKborder td {border-color: #000 !important;}
+.data-table1 .PHIcolors td, .data-table1 .EaglesColors td {background: #004149 !important; color: #FFF !important;}
+.data-table1 .PHIborder td {border-color: #004149 !important;}
+.data-table1 .PITcolors td, .data-table1 .SteelersColors td {background: #000 !important; color: #FFF !important;}
+.data-table1 .PITborder td {border-color: #000 !important;}
+.data-table1 .SDcolors td, .data-table1 .ChargersColors td {background: #04284F !important; color: #FFF !important;}
+.data-table1 .SDborder td {border-color: #04284F !important;}
+.data-table1 .SEAcolors td, .data-table1 .SeahawksColors td {background: #3C5179 !important; color: #FFF !important;}
+.data-table1 .SEAborder td {border-color: #3C5179 !important;}
+.data-table1 .SFcolors td, .data-table1 .SF49ersColors td {background: #A1003E !important; color: #FFF !important;}
+.data-table1 .SFborder td {border-color: #A1003E !important;}
+.data-table1 .STLcolors td, .data-table1 .RamsColors td {background: #001945 !important; color: #FFF !important;}
+.data-table1 .STLborder td {border-color: #001945 !important;}
+.data-table1 .TBcolors td, .data-table1 .BuccaneersColors td {background: #d50a0a !important; color: #FFF !important;}
+.data-table1 .TBborder td {border-color: #d50a0a !important;}
+.data-table1 .TENcolors td, .data-table1 .TitansColors td {background: #689DC9 !important; color: #FFF !important;}
+.data-table1 .TENborder td {border-color: #689DC9 !important;}
+.data-table1 .WAScolors td, .data-table1 .RedskinsColors td {background: #79002E !important; color: #FFF !important;}
+.data-table1 .WASborder td {border-color: #79002E !important;}
+.data-table1 .ALLTIMEcolors td {background: #039 !important; color: #FFF !important;}
+.data-table1 .ALLTIMEborder td {border-color: #039 !important;}
+.data-table1 .DEFAULTcolors td {background: #a2a2a2; color: #FFF;}
+.data-table1 .AFCcolors td, .data-table1 .APRcolors td {background: #b50023; font-size: 11px;}
+.data-table1 .NFCcolors td, .data-table1 .NPRcolors td {background: #004079; font-size: 11px;}
+.data-table1 .defaultConf td {background: #e6eeff; color: #000; font-size: 11px;}
