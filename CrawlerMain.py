@@ -8,7 +8,7 @@ import csv
 
 def main():
 	# Information is stored as player: price, opposing team
-	runningBackPlayerInformation = []
+	runningBackPlayerInformation = {}
 
 	# Parse DraftKings CSV file of salaries and matchups
 	with open('PageData/DKSalaries.csv', 'rb') as salaryFile:
@@ -24,18 +24,89 @@ def main():
 					opposingTeam = matchUp[1]
 				row[1] = row[1].replace('"', "")
 				row[2].replace('"', "")
-				runningBackPlayerInformation.append([ row[1], [row[2], opposingTeam] ])
+				runningBackPlayerInformation[row[1]] = [row[2], opposingTeam]
 
-	# Now parse nfl.com's website to find the running back's average carries per game
-
-	# NFLRunningBackCarryStats1.html
+	# Now parse yahoo's website to find the running back's average carries per game
 	tree = html.parse('PageData/NFLRunningBackCarryStats1.html').getroot()
 
-	# Get all of the players and their salary/team/opponent
-	currentDiv = findClassName(tree, 'content-div default')
+	currentDiv = findClassName(tree, 'yom-mod yom-app yom-league-stats')
+	# Set the current div to the start of the table with the info we're trying to scrape
+	currentDiv = currentDiv[7][0]
+	# Iterate through all rows
+	for row in currentDiv.getchildren():
+		if row == currentDiv.getchildren()[0]:
+			continue
+		if row == currentDiv.getchildren()[1]:
+			continue
 
-	currentDiv = currentDiv.getparent()
+		# Extract info from that row
+		name = row.getchildren()[0].getchildren()[0].text
 
+		gamesPlayed = row.getchildren()[2].text
+
+		totalRushes = row.getchildren()[4].text
+
+		gamesPlayed = gamesPlayed.replace("/", "")
+		totalRushes = totalRushes.replace("/", "")
+
+		if gamesPlayed[0] == 'N':
+			continue
+
+		if totalRushes[0] == 'N':
+			continue
+
+		averageRushesPerGame = (float(totalRushes) / float(gamesPlayed))
+
+		# Check if this running back is in our list currently
+		if name in runningBackPlayerInformation.keys():
+			runningBackPlayerInformation[name].append(averageRushesPerGame)
+		#else:
+
+	# Add this data to our running back information
+	#print runningBackPlayerInformation[name]
+
+	#print runningBackPlayerInformation
+
+	# Parse yahoo's data to get a defense's average yards given up per carry
+	teamAverageYardagePerRush = {}
+	secondTree = html.parse('PageData/TeamRushingStats.html').getroot()
+
+	thisDiv = findClassName(secondTree, 'yom-mod yom-app yom-league-statsbyteam')
+	# Set the current div to the start of the table with the info we're trying to scrape
+	thisDiv = thisDiv[6][0]
+	# Iterate through all rows
+	for row in thisDiv.getchildren():
+		if row == thisDiv.getchildren()[0]:
+			continue
+
+		# Extract info from that row
+		name = row.getchildren()[0].getchildren()[0].text
+		averageYardPerRush = row.getchildren()[8].text
+
+		name = 
+
+		teamAverageYardagePerRush[name] = float(averageYardPerRush)
+
+	# Iterate through the teams and change them to their abbreviations
+	for team in teamAverageYardagePerRush:
+		dir(team)
+
+"""
+	for row in currentDiv.getchildren():
+		print ""
+		print row
+		print row.keys()
+"""
+"""
+	print ""
+	print ""
+	print currentDiv.getchildren()
+	print currentDiv.keys()
+	print currentDiv.get('class')
+	print currentDiv.get('id')
+	#print dir(currentDiv)
+"""
+"""
 	print ""
 	print ""
 	print currentDiv
@@ -43,10 +114,9 @@ def main():
 	print ""
 	print currentDiv.keys()
 	print currentDiv.get('class')
-	print currentDiv.getchildren()
-	print ""
-	print ""
-	print dir(currentDiv)
+
+"""
+	
 
 #	for backs in runningBackPlayerInformation:
 #		print backs
@@ -72,6 +142,63 @@ def main():
 	print ""
 	print dir(currentDiv)
 """
+
+# Convert full length team names into their abbreviations
+def convertTeamNameToAbbreviations(name):
+	if name == "New Orleans Saints":
+		return "NO"
+	elif name == "Pittsburgh Steelers":
+		return "Pit"
+	elif name == "New England Patriots":
+		return "NE"
+	elif name == "San Diego Chargers":
+		return "SD"
+	elif name == "Tampa Bay Buccanneers":
+		return "TB"
+	elif name == "Philadelphia Eagles":
+		return "Phi"
+	elif name == "St. Louis Rams":
+		return "StL"
+	elif name == "Atlanta Falcons":
+		return "Atl"
+	elif name == "Cleveland Browns":
+		return "Cle"
+	elif name == "Cincinatti Bengals":
+		return "Cin"
+	elif name == "Oakland Raiders":
+		return "Oak"
+	elif name == "Buffalo Bills":
+		return "Buf"
+	elif name == "New York Giants":
+		return "NYG"
+	elif name == "Detroit Lions":
+		return "Det"
+	elif name == "Carolina Panthers":
+		return "Car"
+	elif name == "San Francisco 49ers":
+		return "SF"
+	elif name == "Washington Redskins":
+		return "Was"
+	elif name == "Seattle Seahawks":
+		return "Sea"
+	elif name == "Arizona Cardinals":
+		return "Ari"
+	elif name == "Houston Texans":
+		return "Hou"
+	elif name == "Tennessee Titans":
+		return "Ten"
+	elif name == "Jacksonville Jaguars":
+		return "Jax"
+	elif name == "Chicago Bears":
+		return "Chi"
+	elif name == "Indianapolis Colts":
+		return "Ind"
+	elif name == "Miami Dolphins":
+		return "Mia"
+	elif name == "New York Jets":
+		return "NYJ"
+	elif name == "Baltimore Ravens":
+		
 
 # Helper function that takes in a string with two teams separated by an @ and returns them as a tuple
 def parseTeamsInMatchup(matchupString):
