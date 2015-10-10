@@ -126,7 +126,7 @@ def main():
 		runningBackInfoSheet.write(currentRow, 2, thisPlayerData[1])
 		runningBackInfoSheet.write(currentRow, 3, thisPlayerData[2])
 		runningBackInfoSheet.write(currentRow, 4, thisPlayerData[3])
-		runningBackInfoSheet.write(currentRow, 5, thisPlayerData[4] * 1000)
+		runningBackInfoSheet.write(currentRow, 5, thisPlayerData[4])
 
 		# Increment to the next row
 		currentRow += 1
