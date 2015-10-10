@@ -60,7 +60,6 @@ def main():
 		# Check if this running back is in our list currently
 		if name in runningBackPlayerInformation.keys():
 			runningBackPlayerInformation[name].append(averageRushesPerGame)
-		#else:
 
 	# Add this data to our running back information
 	#print runningBackPlayerInformation[name]
@@ -83,13 +82,27 @@ def main():
 		name = row.getchildren()[0].getchildren()[0].text
 		averageYardPerRush = row.getchildren()[8].text
 
-		name = 
+		# Abbreviate the team names
+		name = convertTeamNameToAbbreviations(name)
 
 		teamAverageYardagePerRush[name] = float(averageYardPerRush)
 
-	# Iterate through the teams and change them to their abbreviations
-	for team in teamAverageYardagePerRush:
-		dir(team)
+	# Add on a projected yards per game statistic to 
+	playersWithoutCarriesPerGame = []
+	for player in runningBackPlayerInformation:
+		# Get rid of the players who we couldn't get carries per game counts for
+		if len(runningBackPlayerInformation[player]) == 2:
+			print "Found him " + player
+			playersWithoutCarriesPerGame.append(player)
+			continue
+
+	# Remove all the players who don't have any carries this season
+	for playerToRemove in playersWithoutCarriesPerGame:
+		del runningBackPlayerInformation[playerToRemove]
+
+	print ""
+	print ""
+	print runningBackPlayerInformation
 
 """
 	for row in currentDiv.getchildren():
@@ -153,7 +166,7 @@ def convertTeamNameToAbbreviations(name):
 		return "NE"
 	elif name == "San Diego Chargers":
 		return "SD"
-	elif name == "Tampa Bay Buccanneers":
+	elif name == "Tampa Bay Buccaneers":
 		return "TB"
 	elif name == "Philadelphia Eagles":
 		return "Phi"
@@ -163,7 +176,7 @@ def convertTeamNameToAbbreviations(name):
 		return "Atl"
 	elif name == "Cleveland Browns":
 		return "Cle"
-	elif name == "Cincinatti Bengals":
+	elif name == "Cincinnati Bengals":
 		return "Cin"
 	elif name == "Oakland Raiders":
 		return "Oak"
@@ -198,7 +211,20 @@ def convertTeamNameToAbbreviations(name):
 	elif name == "New York Jets":
 		return "NYJ"
 	elif name == "Baltimore Ravens":
-		
+		return "Bal"
+	elif name == "Kansas City Chiefs":
+		return "KC"
+	elif name == "Denver Broncos":
+		return "Den"
+	elif name == "Green Bay Packers":
+		return "GB"
+	elif name == "Minnesota Vikings":
+		return "Min"
+	elif name == "Dallas Cowboys":
+		return "Dal"
+	else:
+		print "Couldn't match up this name: " + name
+		return ""
 
 # Helper function that takes in a string with two teams separated by an @ and returns them as a tuple
 def parseTeamsInMatchup(matchupString):
