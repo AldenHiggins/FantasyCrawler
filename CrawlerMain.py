@@ -92,16 +92,23 @@ def main():
 	for player in runningBackPlayerInformation:
 		# Get rid of the players who we couldn't get carries per game counts for
 		if len(runningBackPlayerInformation[player]) == 2:
-			print "Found him " + player
 			playersWithoutCarriesPerGame.append(player)
 			continue
+		# Multiply this player's average carries by the average yardage per carry of the defense they're facing
+		playerCost = runningBackPlayerInformation[player][0]
+		opposingDefense = runningBackPlayerInformation[player][1]
+		playerCarriesPerGame = runningBackPlayerInformation[player][2]
+		thisPlayersProjectedYardage = playerCarriesPerGame * teamAverageYardagePerRush[opposingDefense]
+
+		print thisPlayersProjectedYardage
+		runningBackPlayerInformation[player].append(thisPlayersProjectedYardage)
+		runningBackPlayerInformation[player].append((thisPlayersProjectedYardage / float(playerCost)))
 
 	# Remove all the players who don't have any carries this season
 	for playerToRemove in playersWithoutCarriesPerGame:
 		del runningBackPlayerInformation[playerToRemove]
 
-	print ""
-	print ""
+	# Format of player info: cost, opposing defense, carries per game, projected yardage, cost per yard
 	print runningBackPlayerInformation
 
 """
