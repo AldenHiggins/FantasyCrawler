@@ -4,7 +4,8 @@ from lxml import html
 import requests
 # CSV Parsing
 import csv
-
+# Write to an Excel spreadsheet
+import xlwt
 
 def main():
 	# Information is stored as player: price, opposing team
@@ -61,11 +62,6 @@ def main():
 		if name in runningBackPlayerInformation.keys():
 			runningBackPlayerInformation[name].append(averageRushesPerGame)
 
-	# Add this data to our running back information
-	#print runningBackPlayerInformation[name]
-
-	#print runningBackPlayerInformation
-
 	# Parse yahoo's data to get a defense's average yards given up per carry
 	teamAverageYardagePerRush = {}
 	secondTree = html.parse('PageData/TeamRushingStats.html').getroot()
@@ -108,60 +104,34 @@ def main():
 	for playerToRemove in playersWithoutCarriesPerGame:
 		del runningBackPlayerInformation[playerToRemove]
 
-	# Format of player info: cost, opposing defense, carries per game, projected yardage, cost per yard
-	print runningBackPlayerInformation
+	# Generate an excel document containing our info
+	excelDocument = xlwt.Workbook(encoding="utf-8")
 
-"""
-	for row in currentDiv.getchildren():
-		print ""
-		print row
-		print row.keys()
-"""
-"""
-	print ""
-	print ""
-	print currentDiv.getchildren()
-	print currentDiv.keys()
-	print currentDiv.get('class')
-	print currentDiv.get('id')
-	#print dir(currentDiv)
-"""
-"""
-	print ""
-	print ""
-	print currentDiv
-	print ""
-	print ""
-	print currentDiv.keys()
-	print currentDiv.get('class')
+	runningBackInfoSheet = excelDocument.add_sheet("Running Backs", cell_overwrite_ok=True)
 
-"""
-	
+	# Write up the data categories on the top line
+	runningBackInfoSheet.write(0, 0, "Player Name")
+	runningBackInfoSheet.write(0, 1, "Cost (DK)")
+	runningBackInfoSheet.write(0, 2, "Opposing D")
+	runningBackInfoSheet.write(0, 3, "Carries Per Game")
+	runningBackInfoSheet.write(0, 4, "Projected Yardage")
+	runningBackInfoSheet.write(0, 5, "Yards per dollar")
 
-#	for backs in runningBackPlayerInformation:
-#		print backs
+	currentRow = 1
+	# Write out all of our player data to the sheet
+	for player in runningBackPlayerInformation:
+		thisPlayerData = runningBackPlayerInformation[player]
+		runningBackInfoSheet.write(currentRow, 0, player)
+		runningBackInfoSheet.write(currentRow, 1, thisPlayerData[0])
+		runningBackInfoSheet.write(currentRow, 2, thisPlayerData[1])
+		runningBackInfoSheet.write(currentRow, 3, thisPlayerData[2])
+		runningBackInfoSheet.write(currentRow, 4, thisPlayerData[3])
+		runningBackInfoSheet.write(currentRow, 5, thisPlayerData[4] * 1000)
 
-"""
-	tree = html.parse('PageData/FantasyLabsRunningBacks.html').getroot()
+		# Increment to the next row
+		currentRow += 1
 
-	# Get all of the players and their salary/team/opponent
-	currentDiv = findClassName(tree, 'ag-pinned-cols-container')
-
-
-	print len(currentDiv.getchildren())
-
-	print ""
-	print ""
-	print currentDiv
-	print ""
-	print ""
-	print currentDiv.keys()
-	print currentDiv.get('class')
-	print currentDiv.getchildren()
-	print ""
-	print ""
-	print dir(currentDiv)
-"""
+	excelDocument.save("FantasyData.xls")
 
 # Convert full length team names into their abbreviations
 def convertTeamNameToAbbreviations(name):
